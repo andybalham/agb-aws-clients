@@ -1,7 +1,7 @@
 {
-  "name": "@andybalham/github-package-template",
-  "version": "2.27.1805",
-  "description": "Template package for GitHub packages",
+  "name": "@andybalham/agb-aws-client",
+  "version": "1.0.0",
+  "description": "Collection of AWS client wrappers",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andybalham/github-package-template.git"
+    "url": "git+https://github.com/andybalham/agb-aws-client.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andybalham/github-package-template/issues"
+    "url": "https://github.com/andybalham/agb-aws-client/issues"
   },
-  "homepage": "https://github.com/andybalham/github-package-template#readme",
+  "homepage": "https://github.com/andybalham/agb-aws-client#readme",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.11",
@@ -28,6 +28,7 @@
     "@types/node": "^14.14.31",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
+    "aws-sdk": "^2.853.0",
     "chai": "^4.2.0",
     "eslint": "^7.20.0",
     "eslint-config-airbnb-typescript": "^12.3.1",

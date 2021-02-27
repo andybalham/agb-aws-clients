@@ -1,4 +1,5 @@
-import MyClass from './MyClass';
-import Operation from './Operation';
+/* istanbul ignore file */
+/* eslint-disable import/prefer-default-export */
+import S3Client from './S3Client';
 
-export { MyClass, Operation };
+export { S3Client };
