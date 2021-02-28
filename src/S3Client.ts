@@ -22,8 +22,8 @@ export default class S3Client {
     this.s3 = s3Override ?? s3;
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  async getObjectAsync<T extends object>(key: string, bucketNameOverride?: string): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async getObjectAsync<T extends Record<string, any>>(key: string, bucketNameOverride?: string): Promise<T> {
     //
     const bucketName = bucketNameOverride ?? this.bucketName;
 
@@ -56,8 +56,8 @@ export default class S3Client {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  async putObjectAsync(key: string, obj: object, bucketNameOverride?: string): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async putObjectAsync(key: string, obj: Record<string, any>, bucketNameOverride?: string): Promise<void> {
     //
     const bucketName = bucketNameOverride ?? this.bucketName;
 
