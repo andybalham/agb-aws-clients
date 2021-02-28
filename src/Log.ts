@@ -1,4 +1,5 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable import/prefer-default-export */
 export class Log {
   debug?: (message: string, params?: Record<string, any>) => void;
 
