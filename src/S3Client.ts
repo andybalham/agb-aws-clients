@@ -1,3 +1,4 @@
+// TODO 28Feb21: Include this in code coverage
 /* istanbul ignore file */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import S3, { GetObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';

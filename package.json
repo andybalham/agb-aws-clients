@@ -1,5 +1,5 @@
 {
-  "name": "@andybalham/agb-aws-client",
+  "name": "@andybalham/agb-aws-clients",
   "version": "1.0.0",
   "description": "Collection of AWS client wrappers",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andybalham/agb-aws-client.git"
+    "url": "git+https://github.com/andybalham/agb-aws-clients.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andybalham/agb-aws-client/issues"
+    "url": "https://github.com/andybalham/agb-aws-clients/issues"
   },
-  "homepage": "https://github.com/andybalham/agb-aws-client#readme",
+  "homepage": "https://github.com/andybalham/agb-aws-clients#readme",
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.11",
