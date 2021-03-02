@@ -9,7 +9,8 @@
     "lint-and-fix": "eslint ./src --ext .ts --fix",
     "build": "npm run lint && tsc",
     "test": "mocha --require ts-node/register test/**/*.ts",
-    "test-coverage": "nyc npm run test"
+    "test-coverage": "nyc npm run test",
+    "deploy-stepfunctions": "tsc && cdk deploy StepFunctionTest"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,10 @@
   },
   "homepage": "https://github.com/andybalham/agb-aws-clients#readme",
   "devDependencies": {
+    "@aws-cdk/aws-lambda": "^1.91.0",
+    "@aws-cdk/aws-stepfunctions": "^1.91.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "^1.91.0",
+    "@aws-cdk/core": "^1.91.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.2.1",
