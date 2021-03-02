@@ -12,7 +12,7 @@ beforeEach(async (done) => {
   done();
 });
 
-describe('the module', () => {
+describe('StepFunctionsClient tests', () => {
   //
   [
     { log: {} },
