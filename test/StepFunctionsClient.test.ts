@@ -5,7 +5,7 @@ import AWSMock from 'aws-sdk-mock';
 import AWS from 'aws-sdk';
 import { expect } from 'chai';
 import { StartExecutionInput } from 'aws-sdk/clients/stepfunctions';
-import { StepFunctionClient } from '../src';
+import { StepFunctionsClient } from '../src';
 
 beforeEach(async (done) => {
   // get requires env vars
@@ -36,14 +36,14 @@ describe('the module', () => {
         callback(null);
       });
 
-      StepFunctionClient.Log = theory.log;
-      const sutStepFunctionClient = new StepFunctionClient('arn', new AWS.StepFunctions());
+      StepFunctionsClient.Log = theory.log;
+      const sutStepFunctionsClient = new StepFunctionsClient('arn', new AWS.StepFunctions());
 
       const inputObject = { p1: 666, p2: 'beast' };
 
       // Act
 
-      await sutStepFunctionClient.startExecutionAsync(inputObject);
+      await sutStepFunctionsClient.startExecutionAsync(inputObject);
 
       // Assert
 
@@ -58,14 +58,14 @@ describe('the module', () => {
   it('stateMachineArn not specified results in an exception', async () => {
     // Arrange
 
-    const sutStepFunctionClient = new StepFunctionClient();
+    const sutStepFunctionsClient = new StepFunctionsClient();
 
     // Act
 
     let actualError: Error | null = null;
 
     try {
-      await sutStepFunctionClient.startExecutionAsync({});
+      await sutStepFunctionsClient.startExecutionAsync({});
     } catch (error) {
       actualError = error as Error;
     }
@@ -84,7 +84,7 @@ describe('the module', () => {
 // import { expect } from 'chai';
 // // import { StartExecutionInput } from 'aws-sdk/clients/stepfunctions';
 // import { GetItemInput } from 'aws-sdk/clients/dynamodb';
-// // import { StepFunctionClient } from '../src';
+// // import { StepFunctionsClient } from '../src';
 
 // beforeEach('mock out dependencies', async (done) => {
 //   done();
@@ -92,7 +92,7 @@ describe('the module', () => {
 
 // afterEach('restore dependencies', () => {});
 
-// describe('StepFunctionClient tests', () => {
+// describe('StepFunctionsClient tests', () => {
 //   //
 
 //   it.only('should mock getItem from DynamoDB', async () => {

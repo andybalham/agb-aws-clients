@@ -10,7 +10,7 @@
     "build": "npm run lint && tsc",
     "test": "mocha --require ts-node/register test/**/*.ts",
     "test-coverage": "nyc npm run test",
-    "deploy-stepfunctions": "tsc && cdk deploy StepFunctionTest"
+    "deploy-stepfunctions": "tsc && cdk deploy StepFunctionsTest"
   },
   "repository": {
     "type": "git",

@@ -6,7 +6,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 
-export default class StepFunctionStack extends cdk.Stack {
+export default class StepFunctionsClientStack extends cdk.Stack {
   //
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     //
@@ -15,7 +15,7 @@ export default class StepFunctionStack extends cdk.Stack {
     new lambda.Function(this, 'HelloHandler', {
       runtime: lambda.Runtime.NODEJS_12_X,
       code: lambda.Code.fromAsset('dist/test-deploy/functions'),
-      handler: 'StepFunctionClientFunctions.handler',
+      handler: 'StepFunctionsClientFunctions.handler',
     });
 
     // const helloWithCounter = new HitCounter(this, 'HelloHitCounter', {
