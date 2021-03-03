@@ -10,7 +10,7 @@
     "build": "npm run lint && tsc",
     "test": "mocha --require ts-node/register test/**/*.ts",
     "test-coverage": "nyc npm run test",
-    "deploy-stepfunctions": "tsc && cdk deploy StepFunctionsTest"
+    "deploy-stepfunctions": "tsc && cdk deploy StepFunctionsClientTest"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/andybalham/agb-aws-clients#readme",
   "devDependencies": {
     "@aws-cdk/aws-lambda": "^1.91.0",
+    "@aws-cdk/aws-logs": "^1.91.0",
     "@aws-cdk/aws-stepfunctions": "^1.91.0",
     "@aws-cdk/aws-stepfunctions-tasks": "^1.91.0",
     "@aws-cdk/core": "^1.91.0",
