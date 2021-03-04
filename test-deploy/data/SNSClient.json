@@ -1,0 +1,9 @@
+{
+  "content": {
+    "Hello": "SNSClient"
+  },
+  "attributes": {
+    "stringValue": "Aloha!",
+    "numberValue": 666
+  }
+}
