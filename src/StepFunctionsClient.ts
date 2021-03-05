@@ -15,7 +15,7 @@ const stepFunctions = new StepFunctions({
 
 export default class StepFunctionsClient {
   //
-  static Log: Log = {};
+  static Log: Log | undefined;
 
   private stepFunctions: StepFunctions;
 
@@ -33,7 +33,7 @@ export default class StepFunctionsClient {
       input: JSON.stringify(inputObject),
     };
 
-    if (StepFunctionsClient.Log.debug) StepFunctionsClient.Log.debug('startExecution', { params });
+    if (StepFunctionsClient.Log?.debug) StepFunctionsClient.Log.debug('startExecution', { params });
 
     await this.stepFunctions.startExecution(params).promise();
   }

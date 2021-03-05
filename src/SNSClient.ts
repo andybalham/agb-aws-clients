@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// TODO 28Feb21: Include this in code coverage
-/* istanbul ignore file */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import SNS, { MessageAttributeMap, MessageAttributeValue, PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
 import https from 'https';
@@ -18,7 +16,7 @@ const sns = new SNS({
 
 export default class SNSClient {
   //
-  static Log: Log = {};
+  static Log: Log | undefined;
 
   private sns: SNS;
 
@@ -37,11 +35,11 @@ export default class SNSClient {
       MessageAttributes: SNSClient.getMessageAttributeMap(attributes),
     };
 
-    if (SNSClient.Log.debug) SNSClient.Log.debug('Publishing', { topicArn: this.topicArn, publishInput });
+    if (SNSClient.Log?.debug) SNSClient.Log.debug('Publishing', { topicArn: this.topicArn, publishInput });
 
     const publishResponse = await this.sns.publish(publishInput).promise();
 
-    if (SNSClient.Log.debug) SNSClient.Log.debug('Published', { topicArn: this.topicArn, publishResponse });
+    if (SNSClient.Log?.debug) SNSClient.Log.debug('Published', { topicArn: this.topicArn, publishResponse });
 
     return publishResponse;
   }
@@ -83,16 +81,13 @@ export default class SNSClient {
     let dataType: string;
     switch (typeof attributeValue) {
       //
-      case 'string':
-        dataType = 'String';
-        break;
-
       case 'number':
         dataType = 'Number';
         break;
 
       default:
-        throw new Error(`Unhandled attribute value type: ${typeof attributeValue}`);
+        dataType = 'String';
+        break;
     }
 
     return dataType;

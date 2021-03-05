@@ -5,6 +5,7 @@ import AWS from 'aws-sdk';
 import { PublishInput } from 'aws-sdk/clients/sns';
 import { expect } from 'chai';
 import { SNSClient } from '../src';
+import { consoleLog } from '.';
 
 describe('SNSClient Tests', () => {
   //
@@ -16,34 +17,38 @@ describe('SNSClient Tests', () => {
     AWSMock.restore('SNS');
   });
 
-  it('publishes without attributes', async () => {
-    //
-    // Arrange
+  [{ log: undefined }, { log: {} }, { log: consoleLog }].forEach((theory) => {
+    it(`publishes without attributes: ${JSON.stringify(theory)}`, async () => {
+      //
+      // Arrange
 
-    let actualParams: PublishInput | null = null;
+      let actualParams: PublishInput | null = null;
 
-    AWSMock.mock('SNS', 'publish', (params: PublishInput, callback: Function) => {
-      actualParams = params;
-      callback(null);
-    });
+      AWSMock.mock('SNS', 'publish', (params: PublishInput, callback: Function) => {
+        actualParams = params;
+        callback(null);
+      });
 
-    const content = { Name: 'Value' };
-    const attributes = undefined;
+      SNSClient.Log = theory.log;
 
-    const sutSNSClient = new SNSClient('TestTopicArn', new AWS.SNS());
+      const content = { Name: 'Value' };
+      const attributes = undefined;
 
-    // Act
+      const sutSNSClient = new SNSClient('TestTopicArn', new AWS.SNS());
 
-    await sutSNSClient.publishMessageAsync(content, attributes);
+      // Act
 
-    // Assert
+      await sutSNSClient.publishMessageAsync(content, attributes);
 
-    expect(actualParams).to.not.equal(null);
+      // Assert
 
-    expect(actualParams).to.deep.equal({
-      TopicArn: 'TestTopicArn',
-      Message: '{"Name":"Value"}',
-      MessageAttributes: undefined,
+      expect(actualParams).to.not.equal(null);
+
+      expect(actualParams).to.deep.equal({
+        TopicArn: 'TestTopicArn',
+        Message: '{"Name":"Value"}',
+        MessageAttributes: undefined,
+      });
     });
   });
 
@@ -59,7 +64,7 @@ describe('SNSClient Tests', () => {
     });
 
     const content = { Name: 'Value' };
-    const attributes = undefined;
+    const attributes = { StringValue: 'Aloha!', NumericValue: 666 };
 
     const sutSNSClient = new SNSClient('TestTopicArn', new AWS.SNS());
 
@@ -74,17 +79,28 @@ describe('SNSClient Tests', () => {
     expect(actualParams).to.deep.equal({
       TopicArn: 'TestTopicArn',
       Message: '{"Name":"Value"}',
-      MessageAttributes: undefined,
+      MessageAttributes: {
+        NumericValue: {
+          DataType: 'Number',
+          StringValue: '666',
+        },
+        StringValue: {
+          DataType: 'String',
+          StringValue: 'Aloha!',
+        },
+      },
     });
   });
 
   it('throws exception when no topicArn', async () => {
-    const snsClient = new SNSClient('TopicArn');
-    console.log(`snsClient: ${JSON.stringify(snsClient)}`);
-  });
+    //
+    const snsClient = new SNSClient();
 
-  it('publishes with a log', async () => {
-    const snsClient = new SNSClient('TopicArn');
-    console.log(`snsClient: ${JSON.stringify(snsClient)}`);
+    try {
+      await snsClient.publishMessageAsync({});
+      expect.fail('No exception thrown');
+    } catch (error) {
+      expect(error.message).to.contain('topicArn');
+    }
   });
 });

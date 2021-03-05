@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+/* eslint-disable class-methods-use-this */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-new */
 import * as cdk from '@aws-cdk/core';
 import * as sns from '@aws-cdk/aws-sns';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as testFunctions from './functions';
 
 export default class SNSClientStack extends cdk.Stack {
   //
@@ -16,30 +17,30 @@ export default class SNSClientStack extends cdk.Stack {
       displayName: 'SNSClient test topic',
     });
 
-    const publishFunction = new lambda.Function(this, 'SNSClientPublishFunction', {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      code: lambda.Code.fromAsset('dist'),
-      handler: 'test-deploy/functions/SNSClientFunctions.publishHandler',
-      environment: {
+    const publishFunction = testFunctions.newFunction(
+      this,
+      'SNSClientPublishFunction',
+      'SNSClientFunctions.publishHandler',
+      {
         TOPIC_ARN: topic.topicArn,
-      },
-    });
+      }
+    );
 
     topic.grantPublish(publishFunction);
 
-    const subscribeAllFunction = new lambda.Function(this, 'SNSClientSubscribeAllFunction', {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      code: lambda.Code.fromAsset('dist'),
-      handler: 'test-deploy/functions/SNSClientFunctions.subscribeHandler',
-    });
+    const subscribeAllFunction = testFunctions.newFunction(
+      this,
+      'SNSClientSubscribeAllFunction',
+      'SNSClientFunctions.subscribeHandler'
+    );
 
     topic.addSubscription(new subs.LambdaSubscription(subscribeAllFunction));
 
-    const subscribeWithFilterFunction = new lambda.Function(this, 'SNSClientSubscribeWithFilterFunction', {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      code: lambda.Code.fromAsset('dist'),
-      handler: 'test-deploy/functions/SNSClientFunctions.subscribeHandler',
-    });
+    const subscribeWithFilterFunction = testFunctions.newFunction(
+      this,
+      'SNSClientSubscribeWithFilterFunction',
+      'SNSClientFunctions.subscribeHandler'
+    );
 
     topic.addSubscription(
       new subs.LambdaSubscription(subscribeWithFilterFunction, {

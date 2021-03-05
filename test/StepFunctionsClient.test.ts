@@ -6,6 +6,7 @@ import AWS from 'aws-sdk';
 import { expect } from 'chai';
 import { StartExecutionInput } from 'aws-sdk/clients/stepfunctions';
 import { StepFunctionsClient } from '../src';
+import { consoleLog } from '.';
 
 beforeEach(async (done) => {
   // get requires env vars
@@ -14,16 +15,7 @@ beforeEach(async (done) => {
 
 describe('StepFunctionsClient tests', () => {
   //
-  [
-    { log: {} },
-    {
-      log: {
-        debug: (message: string, params?: Record<string, any>): void => {
-          console.debug(`${message}: ${JSON.stringify(params)}`);
-        },
-      },
-    },
-  ].forEach((theory) => {
+  [{ log: undefined }, { log: {} }, { log: consoleLog }].forEach((theory) => {
     it(`starts execution with input: ${JSON.stringify(theory)}`, async () => {
       // Arrange
 

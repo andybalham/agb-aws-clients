@@ -11,6 +11,7 @@
     "test": "mocha --require ts-node/register test/**/*.ts",
     "test-coverage": "nyc npm run test",
     "deploy-stepfunctions": "tsc && cdk deploy StepFunctionsClientTest",
+    "synth-sns": "tsc && cdk synth SNSClientTest",
     "deploy-sns": "tsc && cdk deploy SNSClientTest"
   },
   "repository": {
