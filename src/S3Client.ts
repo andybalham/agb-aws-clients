@@ -22,8 +22,32 @@ export default class S3Client {
     this.s3 = s3Override ?? s3;
   }
 
+  async putObjectAsync(
+    key: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    obj: Record<string, any>,
+    bucketNameOverride?: string
+  ): Promise<void> {
+    //
+    const bucketName = bucketNameOverride ?? this.bucketName;
+
+    if (bucketName === undefined) throw new Error('bucket === undefined');
+
+    const putObjectRequest: PutObjectRequest = {
+      Bucket: bucketName,
+      Key: key,
+      Body: JSON.stringify(obj),
+      ContentType: 'application/json; charset=utf-8',
+    };
+
+    await this.s3.putObject(putObjectRequest).promise();
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async getObjectAsync<T extends Record<string, any>>(key: string, bucketNameOverride?: string): Promise<T> {
+  async getObjectAsync<T extends Record<string, any>>(
+    key: string,
+    bucketNameOverride?: string
+  ): Promise<T> {
     //
     const bucketName = bucketNameOverride ?? this.bucketName;
 
@@ -45,31 +69,18 @@ export default class S3Client {
       return obj;
       //
     } catch (error) {
+      //
       if (error instanceof Error) {
         if (error.name === 'NoSuchKey') {
-          const newError = new Error(`The specified key does not exist: ${key}, bucket: ${bucketName}`);
+          const newError = new Error(
+            `The specified key does not exist: ${key}, bucket: ${bucketName}`
+          );
           newError.name = error.name;
           throw newError;
         }
       }
+
       throw error;
     }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async putObjectAsync(key: string, obj: Record<string, any>, bucketNameOverride?: string): Promise<void> {
-    //
-    const bucketName = bucketNameOverride ?? this.bucketName;
-
-    if (bucketName === undefined) throw new Error('bucket === undefined');
-
-    const putObjectRequest: PutObjectRequest = {
-      Bucket: bucketName,
-      Key: key,
-      Body: JSON.stringify(obj),
-      ContentType: 'application/json; charset=utf-8',
-    };
-
-    await this.s3.putObject(putObjectRequest).promise();
   }
 }
