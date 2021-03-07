@@ -16,7 +16,7 @@ export default class S3ClientStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    const publishFunction = testFunctions.newFunction(
+    const putAndGetFunction = testFunctions.newFunction(
       this,
       'PutAndGetS3ClientFunction',
       'S3ClientFunctions.putAndGetHandler',
@@ -25,6 +25,16 @@ export default class S3ClientStack extends cdk.Stack {
       }
     );
 
-    testBucket.grantReadWrite(publishFunction);
+    const unknownKeyFunction = testFunctions.newFunction(
+      this,
+      'UnknownKeyS3ClientFunction',
+      'S3ClientFunctions.unknownKeyHandler',
+      {
+        BUCKET_NAME: testBucket.bucketName,
+      }
+    );
+
+    testBucket.grantReadWrite(putAndGetFunction);
+    testBucket.grantReadWrite(unknownKeyFunction);
   }
 }

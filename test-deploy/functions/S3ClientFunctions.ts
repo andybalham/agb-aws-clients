@@ -16,3 +16,10 @@ export const putAndGetHandler = async (event: any): Promise<void> => {
 
   console.log(`getObjectResult: ${JSON.stringify(getObjectResult)}`);
 };
+
+export const unknownKeyHandler = async (): Promise<void> => {
+  //
+  const s3Client = new S3Client(process.env.BUCKET_NAME);
+
+  await s3Client.getObjectAsync('lovely-bunch-of-coconuts');
+};
