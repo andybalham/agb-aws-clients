@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
-import { Log } from '../src';
+import { ClientLog } from '../src';
 
-export const consoleLog: Log = {
+export const consoleLog: ClientLog = {
   debug: (message) => console.debug(message),
   info: (message) => console.debug(message),
   warn: (message) => console.debug(message),

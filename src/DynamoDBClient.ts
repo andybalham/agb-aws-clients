@@ -31,7 +31,9 @@ export default class DynamoDBClient {
     //
     if (this.tableName === undefined) throw new Error('this.tableName === undefined');
 
-    const itemOutput = await this.documentClient.get({ TableName: this.tableName, Key: key }).promise();
+    const itemOutput = await this.documentClient
+      .get({ TableName: this.tableName, Key: key })
+      .promise();
 
     return itemOutput.Item === undefined ? undefined : (itemOutput.Item as T);
   }
@@ -52,16 +54,14 @@ export default class DynamoDBClient {
     if (this.tableName === undefined) throw new Error('this.tableName === undefined');
     if (this.partitionKeyName === undefined) throw new Error('this.partitionKeyName === undefined');
 
+    // If we use QueryInput, then we get a 'Condition parameter type does not match schema type'
     const queryParams /*: QueryInput */ = {
       TableName: this.tableName,
       KeyConditionExpression: `${this.partitionKeyName} = :partitionKey`,
       ExpressionAttributeValues: {
-        // ':partitionKey': , This is needed to meet type QueryInput, but results in 'Condition parameter type does not match schema type'
         ':partitionKey': keyValue,
       },
     };
-
-    // console.log(`queryParams: ${JSON.stringify(queryParams)}`);
 
     const queryOutput = await this.documentClient.query(queryParams).promise();
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/prefer-default-export */
-export class Log {
+export default class ClientLog {
+  //
   debug?: (message: string, params?: Record<string, any>) => void;
 
   error?: (message: string, params?: Record<string, any>, err?: Error) => void;

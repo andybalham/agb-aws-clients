@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import SNS, { MessageAttributeMap, MessageAttributeValue, PublishInput, PublishResponse } from 'aws-sdk/clients/sns';
+import SNS, {
+  MessageAttributeMap,
+  MessageAttributeValue,
+  PublishInput,
+  PublishResponse,
+  // eslint-disable-next-line import/no-extraneous-dependencies
+} from 'aws-sdk/clients/sns';
 import https from 'https';
-import { Log } from './Log';
+import ClientLog from './ClientLog';
 
 const agent = new https.Agent({
   keepAlive: true,
@@ -16,7 +21,7 @@ const sns = new SNS({
 
 export default class SNSClient {
   //
-  static Log: Log | undefined;
+  static Log: ClientLog | undefined;
 
   private sns: SNS;
 
@@ -25,7 +30,10 @@ export default class SNSClient {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async publishMessageAsync(content: Record<string, any>, attributes?: Record<string, any>): Promise<PublishResponse> {
+  async publishMessageAsync(
+    content: Record<string, any>,
+    attributes?: Record<string, any>
+  ): Promise<PublishResponse> {
     //
     if (this.topicArn === undefined) throw new Error('this.topicArn === undefined');
 
@@ -35,17 +43,21 @@ export default class SNSClient {
       MessageAttributes: SNSClient.getMessageAttributeMap(attributes),
     };
 
-    if (SNSClient.Log?.debug) SNSClient.Log.debug('Publishing', { topicArn: this.topicArn, publishInput });
+    if (SNSClient.Log?.debug)
+      SNSClient.Log.debug('Publishing', { topicArn: this.topicArn, publishInput });
 
     const publishResponse = await this.sns.publish(publishInput).promise();
 
-    if (SNSClient.Log?.debug) SNSClient.Log.debug('Published', { topicArn: this.topicArn, publishResponse });
+    if (SNSClient.Log?.debug)
+      SNSClient.Log.debug('Published', { topicArn: this.topicArn, publishResponse });
 
     return publishResponse;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private static getMessageAttributeMap(attributes?: Record<string, any>): MessageAttributeMap | undefined {
+  private static getMessageAttributeMap(
+    attributes?: Record<string, any>
+  ): MessageAttributeMap | undefined {
     //
     if (!attributes) {
       return undefined;

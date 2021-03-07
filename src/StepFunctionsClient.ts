@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import StepFunctions, { StartExecutionInput } from 'aws-sdk/clients/stepfunctions';
 import https from 'https';
-import { Log } from './Log';
+import ClientLog from './ClientLog';
 
 const agent = new https.Agent({
   keepAlive: true,
@@ -15,7 +15,7 @@ const stepFunctions = new StepFunctions({
 
 export default class StepFunctionsClient {
   //
-  static Log: Log | undefined;
+  static Log: ClientLog | undefined;
 
   private stepFunctions: StepFunctions;
 
