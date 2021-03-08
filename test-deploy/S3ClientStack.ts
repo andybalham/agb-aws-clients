@@ -24,6 +24,7 @@ export default class S3ClientStack extends cdk.Stack {
         BUCKET_NAME: testBucket.bucketName,
       }
     );
+    testBucket.grantReadWrite(putAndGetFunction);
 
     const unknownKeyFunction = testFunctions.newFunction(
       this,
@@ -33,8 +34,26 @@ export default class S3ClientStack extends cdk.Stack {
         BUCKET_NAME: testBucket.bucketName,
       }
     );
-
-    testBucket.grantReadWrite(putAndGetFunction);
     testBucket.grantReadWrite(unknownKeyFunction);
+
+    const putAndDeleteFunction = testFunctions.newFunction(
+      this,
+      'PutAndDeleteS3ClientFunction',
+      'S3ClientFunctions.putAndDeleteHandler',
+      {
+        BUCKET_NAME: testBucket.bucketName,
+      }
+    );
+    testBucket.grantReadWrite(putAndDeleteFunction);
+
+    const listObjectsFunction = testFunctions.newFunction(
+      this,
+      'ListObjectsS3ClientFunction',
+      'S3ClientFunctions.listObjectsHandler',
+      {
+        BUCKET_NAME: testBucket.bucketName,
+      }
+    );
+    testBucket.grantReadWrite(listObjectsFunction);
   }
 }

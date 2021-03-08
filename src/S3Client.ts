@@ -1,8 +1,9 @@
 // TODO 28Feb21: Include this in code coverage
 /* istanbul ignore file */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import S3, { GetObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
+import S3, { DeleteObjectRequest, GetObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
 import https from 'https';
+import ClientLog from './ClientLog';
 
 const agent = new https.Agent({
   keepAlive: true,
@@ -16,7 +17,11 @@ const s3 = new S3({
 
 export default class S3Client {
   //
-  private s3: S3;
+  static Log: ClientLog | undefined;
+
+  maxKeysOnList: number | undefined = undefined;
+
+  s3: S3;
 
   constructor(public bucketName?: string, s3Override?: S3) {
     this.s3 = s3Override ?? s3;
@@ -31,7 +36,7 @@ export default class S3Client {
     //
     const bucketName = bucketNameOverride ?? this.bucketName;
 
-    if (bucketName === undefined) throw new Error('bucket === undefined');
+    if (bucketName === undefined) throw new Error('bucketName === undefined');
 
     const putObjectRequest: PutObjectRequest = {
       Bucket: bucketName,
@@ -51,7 +56,7 @@ export default class S3Client {
     //
     const bucketName = bucketNameOverride ?? this.bucketName;
 
-    if (bucketName === undefined) throw new Error('bucket === undefined');
+    if (bucketName === undefined) throw new Error('bucketName === undefined');
 
     const getObjectRequest: GetObjectRequest = {
       Bucket: bucketName,
@@ -82,5 +87,49 @@ export default class S3Client {
 
       throw error;
     }
+  }
+
+  async deleteObjectAsync(key: string, bucketNameOverride?: string): Promise<void> {
+    //
+    const bucketName = bucketNameOverride ?? this.bucketName;
+
+    if (bucketName === undefined) throw new Error('bucketName === undefined');
+
+    const deleteObjectRequest: DeleteObjectRequest = {
+      Bucket: bucketName,
+      Key: key,
+    };
+
+    await this.s3.deleteObject(deleteObjectRequest).promise();
+  }
+
+  async listObjectsAsync(prefix?: string, bucketNameOverride?: string): Promise<S3.ObjectList> {
+    //
+    const bucketName = bucketNameOverride ?? this.bucketName;
+
+    if (bucketName === undefined) throw new Error('bucketName === undefined');
+
+    let continuationToken: string | undefined;
+
+    let objectList: S3.ObjectList = [];
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      const listObjectsOutput = await this.s3
+        .listObjectsV2({
+          Prefix: prefix,
+          Bucket: bucketName,
+          ContinuationToken: continuationToken,
+          MaxKeys: this.maxKeysOnList,
+        })
+        .promise();
+
+      continuationToken = listObjectsOutput.NextContinuationToken;
+
+      objectList = objectList.concat(listObjectsOutput.Contents ?? []);
+      //
+    } while (continuationToken !== undefined);
+
+    return objectList;
   }
 }

@@ -23,7 +23,7 @@ export default class SNSClient {
   //
   static Log: ClientLog | undefined;
 
-  private sns: SNS;
+  sns: SNS;
 
   constructor(private topicArn?: string, snsOverride?: SNS) {
     this.sns = snsOverride ?? sns;

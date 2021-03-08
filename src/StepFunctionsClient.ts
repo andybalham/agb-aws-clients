@@ -17,7 +17,7 @@ export default class StepFunctionsClient {
   //
   static Log: ClientLog | undefined;
 
-  private stepFunctions: StepFunctions;
+  stepFunctions: StepFunctions;
 
   constructor(private stateMachineArn?: string, stepFunctionsOverride?: StepFunctions) {
     this.stepFunctions = stepFunctionsOverride ?? stepFunctions;

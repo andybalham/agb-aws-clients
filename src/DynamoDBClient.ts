@@ -3,6 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { DocumentClient, PutItemInput } from 'aws-sdk/clients/dynamodb';
 import https from 'https';
+import ClientLog from './ClientLog';
 
 const agent = new https.Agent({
   keepAlive: true,
@@ -15,7 +16,10 @@ const documentClient = new DocumentClient({
 });
 
 export default class DynamoDBClient {
-  private documentClient: DocumentClient;
+  //
+  static Log: ClientLog | undefined;
+
+  documentClient: DocumentClient;
 
   constructor(
     public readonly tableName?: string,
