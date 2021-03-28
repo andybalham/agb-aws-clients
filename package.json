@@ -14,7 +14,9 @@
     "deploy-s3": "tsc && cdk deploy S3ClientTest",
     "synth-s3": "tsc && cdk synth S3ClientTest",
     "synth-sns": "tsc && cdk synth SNSClientTest",
-    "deploy-sns": "tsc && cdk deploy SNSClientTest"
+    "deploy-sns": "tsc && cdk deploy SNSClientTest",
+    "synth-sqs": "tsc && cdk synth SQSClientTest",
+    "deploy-sqs": "tsc && cdk deploy SQSClientTest"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
   "homepage": "https://github.com/andybalham/agb-aws-clients#readme",
   "devDependencies": {
     "@aws-cdk/aws-lambda": "^1.91.0",
+    "@aws-cdk/aws-lambda-event-sources": "^1.91.0",
     "@aws-cdk/aws-logs": "^1.91.0",
     "@aws-cdk/aws-sns": "^1.91.0",
     "@aws-cdk/aws-sns-subscriptions": "^1.91.0",
@@ -44,6 +47,7 @@
     "aws-sdk": "^2.853.0",
     "aws-sdk-mock": "^5.1.0",
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^7.20.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.1.0",
